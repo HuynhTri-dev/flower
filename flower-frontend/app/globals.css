@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette from idea/colorpannel.md */
+  --primary: #2B50AA;
+  /* Vivid Hydrangea */
+  --secondary: #E8F6F8;
+  /* Ice Mint Water */
+  --accent: #FF8FA3;
+  /* Fresh Coral */
+  --text-dark: #1A2C42;
+  /* Deep Ocean */
+
+  --background: #FFFFFF;
+  /* Crisp White */
+  --foreground: #1A2C42;
+  /* Deep Ocean used as foreground */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-text-dark: var(--text-dark);
+
+  --font-sans: var(--font-inter);
+  --font-mono: monospace;
+  /* Fallback or removed if not needed */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
