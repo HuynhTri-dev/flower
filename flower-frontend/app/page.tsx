@@ -1,5 +1,7 @@
+
+import { Footer } from "@/component/common/Footer";
 import { Navbar } from "@/component/header";
-import { HeroBanner } from "@/component/home";
+import { HeroBanner, OurJourney, TopProductBanner } from "@/component/home";
 
 export default function Home() {
   return (
@@ -7,6 +9,15 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroBanner />
+        <div className="md:p-8 p-4">
+          <TopProductBanner />
+        </div>
+
+        <div className="md:p-8 p-4">
+          <OurJourney />
+        </div>
+
+        <Footer />
       </main>
     </div>
   );

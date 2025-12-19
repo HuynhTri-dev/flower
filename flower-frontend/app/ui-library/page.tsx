@@ -1,5 +1,8 @@
 "use client";
 
+import { ImageCard } from "@/component/card/ImageCard";
+import { ProductCard } from "@/component/card/ProductCard";
+import { ProductSkeletonCard } from "@/component/card/ProductSekeltonCard";
 import {
     Button,
     InputField,
@@ -197,6 +200,58 @@ export default function UILibrarys() {
                                     />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+                        <span className="w-1 h-6 bg-primary rounded-full"></span> Cards
+                    </h2>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div className="h-64">
+                            <ImageCard image="https://hoaviet247.com/wp-content/uploads/2025/05/mau-trang-hoa-cam-tu-cau.webp" title="Image Card" />
+                        </div>
+                        <div className="h-64">
+                            <ImageCard image="https://hoaviet247.com/wp-content/uploads/2025/05/mau-trang-hoa-cam-tu-cau.webp" title="Glossy Effect" />
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+                        <span className="w-1 h-6 bg-primary rounded-full"></span> Product Cards
+                    </h2>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* Loading State */}
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-400 font-medium ml-1">Loading State</p>
+                            <ProductSkeletonCard />
+                        </div>
+
+                        {/* Standard Product Card */}
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-400 font-medium ml-1">Default</p>
+                            <ProductCard
+                                id="1"
+                                name="Pink Hydrangea Bouquet"
+                                price={450000}
+                                imageUrl="https://hoaviet247.com/wp-content/uploads/2025/05/mau-trang-hoa-cam-tu-cau.webp"
+                                collection="Summer 2025"
+                            />
+                        </div>
+
+                        {/* Another Variant */}
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-400 font-medium ml-1">Long Name Test</p>
+                            <ProductCard
+                                id="2"
+                                name="Premium White Orchids with Golden Vase Collection"
+                                price={1200000}
+                                imageUrl="https://hoaviet247.com/wp-content/uploads/2025/05/mau-trang-hoa-cam-tu-cau.webp"
+                            />
                         </div>
                     </div>
                 </section>

@@ -44,12 +44,12 @@ export const HeroBanner = () => {
                         <div className="pt-8 flex items-center justify-center md:justify-start gap-8 opacity-80">
                             <div>
                                 <p className="text-2xl font-bold text-gray-900">1.2k+</p>
-                                <p className="text-sm text-gray-600">Happy Customers</p>
+                                <p className="text-sm text-gray-600">Khách hàng hài lòng</p>
                             </div>
                             <div className="w-px h-10 bg-gray-300" />
                             <div>
                                 <p className="text-2xl font-bold text-gray-900">100%</p>
-                                <p className="text-sm text-gray-600">Fresh Flowers</p>
+                                <p className="text-sm text-gray-600">Hoa tươi</p>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@ export const HeroBanner = () => {
                     {/* Right Content - Image */}
                     <div className="flex-1 w-full max-w-lg lg:max-w-xl relative">
                         <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500 ease-in-out border-8 border-white">
-                            {/* Using a high quality Unsplash image of a happy person with flowers */}
+
                             <img
                                 src="banner.jpg"
                                 alt="Girl planting flowers happily"
@@ -71,8 +71,8 @@ export const HeroBanner = () => {
                                         <FlowerIcon />
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-gray-900">Eco-Friendly</p>
-                                        <p className="text-xs text-gray-500">Grown with love & care</p>
+                                        <p className="font-semibold text-gray-900">Hoa tươi</p>
+                                        <p className="text-xs text-gray-500">Nẩy mầm bằng tình yêu và sự chăm sóc</p>
                                     </div>
                                 </div>
                             </div>
