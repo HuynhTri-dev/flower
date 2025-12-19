@@ -7,8 +7,14 @@ import { CategoryDropdown } from "./CategoryDropdown";
 import { SearchBar } from "./SearchBar";
 import { ShoppingCart, User, Heart } from "lucide-react";
 import { Button } from "../common";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
+    const router = useRouter();
+    const handleLogin = () => {
+        router.push("/login");
+    };
+
     return (
         <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
             <div className="container mx-auto px-4">
@@ -53,7 +59,7 @@ export const Navbar = () => {
                         <div className="hidden sm:block w-px h-8 bg-gray-200 mx-2"></div>
 
                         <div className="hidden sm:flex gap-3">
-                            <Button variant="outline" size="sm">Log In</Button>
+                            <Button variant="outline" size="sm" onClick={handleLogin}>Log In</Button>
                         </div>
                     </div>
                 </div>
