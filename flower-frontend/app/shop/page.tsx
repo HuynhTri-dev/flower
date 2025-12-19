@@ -7,6 +7,7 @@ import { Navbar } from "@/component/header";
 import { SearchBar, TopProductEachCate } from "@/component/shop";
 import { ProductCard } from "@/component/card/ProductCard";
 import { ProductSkeletonCard } from "@/component/card/ProductSekeltonCard";
+import { Pagination, usePagination } from "@/component/common/Pagination";
 import { ProductApi } from "@/data/api/ProductApi";
 import { Product } from "@/data/models/Product";
 
@@ -33,6 +34,16 @@ export default function ShopPage() {
 
         fetchProducts();
     }, []);
+
+    // Pagination - 20 items per page
+    const {
+        currentPage,
+        setCurrentPage,
+        totalPages,
+        paginatedItems: paginatedProducts,
+        totalItems,
+        itemsPerPage,
+    } = usePagination(products, 20);
 
     const handleAddToCart = (product: Product) => {
         console.log("Add to cart:", product);
@@ -77,7 +88,7 @@ export default function ShopPage() {
                     )}
 
                     {/* Products */}
-                    {!loading && !error && products.map((product) => (
+                    {!loading && !error && paginatedProducts.map((product) => (
                         <ProductCard
                             key={product.id}
                             id={product.id}
@@ -90,6 +101,20 @@ export default function ShopPage() {
                         />
                     ))}
                 </div>
+
+                {/* Pagination */}
+                {!loading && !error && products.length > 0 && (
+                    <div className="mt-8">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                            type="product"
+                            itemsPerPage={itemsPerPage}
+                            totalItems={totalItems}
+                        />
+                    </div>
+                )}
 
                 {/* Empty State */}
                 {!loading && !error && products.length === 0 && (

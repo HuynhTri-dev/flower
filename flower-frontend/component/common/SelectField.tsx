@@ -3,10 +3,13 @@
 import React, { forwardRef } from "react";
 import { ChevronDown } from "lucide-react";
 
+// Define option types - supports both simple strings and value/label objects
+export type SelectOption = string | { value: string; label: string };
+
 export interface SelectFieldProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size' | 'prefix' | 'onChange' | 'value'> {
     label?: string;
     placeholder?: string;
-    options: string[];
+    options: SelectOption[];
     fullWidth?: boolean;
     containerClassName?: string;
     inputId?: string;
@@ -16,8 +19,16 @@ export interface SelectFieldProps extends Omit<React.SelectHTMLAttributes<HTMLSe
     prefix?: React.ReactNode;
     suffix?: React.ReactNode;
     value?: string;
-    onChange?: (value: string) => void;
+    onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
+
+// Helper function to normalize options
+const normalizeOption = (option: SelectOption): { value: string; label: string } => {
+    if (typeof option === 'string') {
+        return { value: option, label: option };
+    }
+    return option;
+};
 
 export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
     (
@@ -63,6 +74,9 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
             ? "bg-gray-50 cursor-not-allowed opacity-75 pointer-events-none"
             : "";
 
+        // Normalize all options
+        const normalizedOptions = options.map(normalizeOption);
+
         return (
             <div className={`flex flex-col gap-1.5 ${fullWidth ? "w-full" : "w-auto self-start"} ${containerClassName}`}>
                 {label && (
@@ -93,7 +107,7 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
                             id={selectId}
                             disabled={disabled}
                             value={value}
-                            onChange={(e) => onChange?.(e.target.value)}
+                            onChange={onChange}
                             className={`
                                 peer w-full appearance-none bg-transparent outline-none text-gray-900 
                                 ${sizeStyles[size]}
@@ -107,9 +121,9 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
                             <option value="" disabled hidden>
                                 {placeholder}
                             </option>
-                            {options.map((option, index) => (
-                                <option key={`${option}-${index}`} value={option} className="text-gray-900">
-                                    {option}
+                            {normalizedOptions.map((option, index) => (
+                                <option key={`${option.value}-${index}`} value={option.value} className="text-gray-900">
+                                    {option.label}
                                 </option>
                             ))}
                         </select>

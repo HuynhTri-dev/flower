@@ -6,6 +6,7 @@ import { Footer } from "@/component/common/Footer";
 import { Navbar } from "@/component/header";
 import { Button } from "@/component/common/Button";
 import { InputField } from "@/component/common/InputField";
+import { Pagination, usePagination } from "@/component/common/Pagination";
 import { Blog, formatBlogDate, truncateContent } from "@/data/models/Blog";
 import { BlogApi } from "@/data/api/BlogApi";
 import Image from "next/image";
@@ -147,6 +148,16 @@ export default function BlogPage() {
         fetchBlogs();
     }, [fetchBlogs]);
 
+    // Pagination - 20 items per page
+    const {
+        currentPage,
+        setCurrentPage,
+        totalPages,
+        paginatedItems: paginatedBlogs,
+        totalItems,
+        itemsPerPage,
+    } = usePagination(blogs, 20);
+
     // Debounce search
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -243,15 +254,29 @@ export default function BlogPage() {
 
                     {/* Blog Grid */}
                     {!loading && !error && blogs.length > 0 && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {blogs.map((blog) => (
-                                <BlogCard
-                                    key={blog.id}
-                                    blog={blog}
-                                    onClick={() => goToBlog(blog.id)}
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {paginatedBlogs.map((blog) => (
+                                    <BlogCard
+                                        key={blog.id}
+                                        blog={blog}
+                                        onClick={() => goToBlog(blog.id)}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* Pagination */}
+                            <div className="mt-12">
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={setCurrentPage}
+                                    type="post"
+                                    itemsPerPage={itemsPerPage}
+                                    totalItems={totalItems}
                                 />
-                            ))}
-                        </div>
+                            </div>
+                        </>
                     )}
                 </div>
             </main>
