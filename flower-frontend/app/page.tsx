@@ -16,9 +16,9 @@ export default function Home() {
         <div className="md:p-8 p-4">
           <OurJourney />
         </div>
-
-        <Footer />
       </main>
+
+      <Footer />
     </div>
   );
 }

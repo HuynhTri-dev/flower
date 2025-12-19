@@ -54,7 +54,6 @@ export const Navbar = () => {
 
                         <div className="hidden sm:flex gap-3">
                             <Button variant="outline" size="sm">Log In</Button>
-                            <Button variant="primary" size="sm">Sign Up</Button>
                         </div>
                     </div>
                 </div>

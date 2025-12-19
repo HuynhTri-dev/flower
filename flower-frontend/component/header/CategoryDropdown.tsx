@@ -2,20 +2,37 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu } from "lucide-react";
-
-// Mock data - in real app this could come from props or API
-const categories = [
-    { id: 1, name: "Fresh Flowers", href: "/category/fresh" },
-    { id: 2, name: "Dried Flowers", href: "/category/dried" },
-    { id: 3, name: "Wedding Bouquets", href: "/category/wedding" },
-    { id: 4, name: "Office Plants", href: "/category/office" },
-    { id: 5, name: "Gift Baskets", href: "/category/gifts" },
-];
+import { ChevronDown, Menu, Loader2 } from "lucide-react";
+import { Category } from "@/data/models/Category";
+import { CategoryApi } from "@/data/api/CategoryApi";
 
 export const CategoryDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Fetch categories when dropdown opens
+    useEffect(() => {
+        if (isOpen && categories.length === 0) {
+            fetchCategories();
+        }
+    }, [isOpen]);
+
+    const fetchCategories = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await CategoryApi.getAll();
+            setCategories(data);
+        } catch (err) {
+            setError("Không thể tải danh mục");
+            console.error("Error fetching categories:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Handle click outside to close
     useEffect(() => {
@@ -31,6 +48,11 @@ export const CategoryDropdown = () => {
         };
     }, []);
 
+    // Generate href from category
+    const getCategoryHref = (category: Category) => {
+        return `/shop?category=${category.slug || category.id}`;
+    };
+
     return (
         <div className="relative" ref={dropdownRef}>
             <button
@@ -41,7 +63,7 @@ export const CategoryDropdown = () => {
                 `}
             >
                 <Menu className="w-5 h-5" />
-                <span className="font-medium text-sm">Categories</span>
+                <span className="font-medium text-sm">Danh mục</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
             </button>
 
@@ -49,16 +71,37 @@ export const CategoryDropdown = () => {
             {isOpen && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200">
                     <div className="py-2">
-                        {categories.map((category) => (
-                            <Link
-                                key={category.id}
-                                href={category.href}
-                                onClick={() => setIsOpen(false)}
-                                className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
-                            >
-                                {category.name}
-                            </Link>
-                        ))}
+                        {loading ? (
+                            <div className="flex items-center justify-center py-6 text-gray-400">
+                                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                                <span className="text-sm">Đang tải...</span>
+                            </div>
+                        ) : error ? (
+                            <div className="px-4 py-3 text-sm text-red-500 text-center">
+                                {error}
+                                <button
+                                    onClick={fetchCategories}
+                                    className="block w-full mt-2 text-primary hover:underline"
+                                >
+                                    Thử lại
+                                </button>
+                            </div>
+                        ) : categories.length === 0 ? (
+                            <div className="px-4 py-3 text-sm text-gray-400 text-center">
+                                Không có danh mục nào
+                            </div>
+                        ) : (
+                            categories.map((category) => (
+                                <Link
+                                    key={category.id}
+                                    href={getCategoryHref(category)}
+                                    onClick={() => setIsOpen(false)}
+                                    className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                                >
+                                    {category.name}
+                                </Link>
+                            ))
+                        )}
                     </div>
                 </div>
             )}

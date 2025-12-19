@@ -92,9 +92,8 @@ export const OurJourney = () => {
                     {STEPS.map((step, index) => {
                         const isOdd = step.id % 2 !== 0;
 
-
                         const ImageBlock = (
-                            <div className="relative group">
+                            <div className={`relative group step-image ${isOdd ? 'slide-from-left' : 'slide-from-right'}`}>
                                 <div className="relative overflow-hidden rounded-3xl shadow-2xl aspect-[4/3] transform group-hover:scale-[1.02] transition-transform duration-500">
                                     <img
                                         src={step.image}
@@ -106,14 +105,14 @@ export const OurJourney = () => {
                                     <div className="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-3xl pointer-events-none" />
                                 </div>
                                 {/* Step number badge on image */}
-                                <div className={`absolute -bottom-4 ${isOdd ? '-right-4' : '-left-4'} w-16 h-16 rounded-2xl ${step.color} text-white shadow-xl flex items-center justify-center font-bold text-xl`}>
+                                <div className={`absolute -bottom-4 ${isOdd ? '-right-4' : '-left-4'} w-16 h-16 rounded-2xl ${step.color} text-white shadow-xl flex items-center justify-center font-bold text-xl step-badge`}>
                                     0{step.id}
                                 </div>
                             </div>
                         );
 
                         const TextBlock = (
-                            <div className={`flex flex-col space-y-5 ${isOdd ? '' : 'lg:items-end lg:text-right'}`}>
+                            <div className={`flex flex-col space-y-5 step-text ${isOdd ? 'slide-from-right' : 'slide-from-left'} ${isOdd ? '' : 'lg:items-end lg:text-right'}`}>
                                 <div className={`inline-flex items-center gap-3 ${isOdd ? '' : 'lg:flex-row-reverse'}`}>
                                     <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${step.color}/10`}>
                                         <step.icon size={24} className={step.color.replace('bg-', 'text-')} />
@@ -137,7 +136,8 @@ export const OurJourney = () => {
                             <div
                                 key={step.id}
                                 ref={(el) => { stepRefs.current[index] = el; }}
-                                className="step-item opacity-0 translate-y-12 transition-all duration-700 ease-out grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center"
+                                className="step-item grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center"
+                                style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
                             >
                                 {isOdd ? (
                                     <>
@@ -157,11 +157,46 @@ export const OurJourney = () => {
             </div>
 
             <style jsx>{`
-        .step-item.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
+                .step-item .step-image,
+                .step-item .step-text {
+                    opacity: 0;
+                    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+
+                .step-item .slide-from-left {
+                    transform: translateX(-60px);
+                }
+
+                .step-item .slide-from-right {
+                    transform: translateX(60px);
+                }
+
+                .step-item .step-badge {
+                    opacity: 0;
+                    transform: scale(0.5);
+                    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s;
+                }
+
+                .step-item.animate-in .step-image,
+                .step-item.animate-in .step-text {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+
+                .step-item.animate-in .step-image {
+                    transition-delay: calc(var(--delay) + 0s);
+                }
+
+                .step-item.animate-in .step-text {
+                    transition-delay: calc(var(--delay) + 0.15s);
+                }
+
+                .step-item.animate-in .step-badge {
+                    opacity: 1;
+                    transform: scale(1);
+                    transition-delay: calc(var(--delay) + 0.5s);
+                }
+            `}</style>
         </section>
     );
 };
